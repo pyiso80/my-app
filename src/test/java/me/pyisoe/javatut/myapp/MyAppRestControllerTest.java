@@ -17,10 +17,14 @@ class MyAppRestControllerTest {
 
     @Test
     void shouldReturnNameFromPostRequest() throws Exception {
+        String json = """
+            { "name": "Pyi Soe" }
+        """;
+
         mockMvc.perform(
                         post("/")
-                                .contentType(MediaType.TEXT_HTML)
-                                .content("Pyi Soe")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json)
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
