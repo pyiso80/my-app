@@ -8,7 +8,7 @@ import java.util.Map;
 @RestController
 public class MyAppApiController {
 
-    @PostMapping("/")
+    @PostMapping(path="/api", produces="application/json")
     public Map<String, String> submitText(@RequestBody JsonNode json) {
         String name = json.get("name").asText();
         return Map.of("name", name);

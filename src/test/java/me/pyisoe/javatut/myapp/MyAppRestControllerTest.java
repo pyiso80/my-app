@@ -22,7 +22,7 @@ class MyAppRestControllerTest {
         """;
 
         mockMvc.perform(
-                        post("/")
+                        post("/api")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json)
                 )
