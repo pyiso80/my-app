@@ -30,7 +30,7 @@ public class FunctionalTests {
     }
 
     @Test
-    void ifHomePageWorking() {
+    void shouldReturnHtmlForRootPath() {
         driver.get("http://localhost:8080");
         assertThat(driver.getTitle()).contains("My App");
     }
