@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Controller
-public class MyAppController {
+public class MyAppHomeController {
     @GetMapping(value = "/")
     public ResponseEntity<String> home() throws Exception {
         ClassPathResource resource = new ClassPathResource("static/index.html");
