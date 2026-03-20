@@ -37,14 +37,14 @@ public class FunctionalTests {
 
     @Test
     void shouldReturnHtmlForRootPath() {
-        driver.get("http://localhost:8080");
+        driver.get("http://localhost:3000");
         assertThat(driver.getTitle()).contains("My App");
     }
 
     @Test
     void canPostSomeTextViaHome() {
         try {
-            driver.get("http://localhost:8080");
+            driver.get("http://localhost:3000");
 
             WebElement input = driver.findElement(By.id("name-input"));
             input.sendKeys("Pyi Soe");
