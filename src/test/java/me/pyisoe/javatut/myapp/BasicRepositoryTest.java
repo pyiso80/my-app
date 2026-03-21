@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @JdbcTest
 @Import({ContactRepo.class, JdbiConfiguration.class })
 public class BasicRepositoryTest {
@@ -27,6 +31,16 @@ public class BasicRepositoryTest {
 
             assert(count == 1);
         });
+    }
+
+    @Test
+    void canFindAllContacts() {
+        contactRepo.insert(new Contact("Pyi Soe"));
+        contactRepo.insert(new Contact("Jason Soe"));
+
+        List<Contact> contacts = contactRepo.findAll();
+
+        assertEquals(2, contacts.size());
     }
 
 }
