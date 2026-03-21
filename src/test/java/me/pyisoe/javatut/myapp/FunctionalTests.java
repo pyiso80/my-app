@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.Duration;
 import java.util.List;
@@ -21,9 +22,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FunctionalTests {
 
+
+    @LocalServerPort
+    int port;
 
     WebDriver driver;
     @Autowired
@@ -53,13 +57,13 @@ public class FunctionalTests {
 
     @Test
     void shouldReturnHtmlForRootPath() {
-        driver.get("http://localhost:3000");
+        driver.get("http://localhost:" + port);
         assertThat(driver.getTitle()).contains("My App");
     }
 
     @Test
     void canAddNewContact() {
-        driver.get("http://localhost:3000");
+        driver.get("http://localhost:" + port);
 
         var expectedContact1 = "Pyi Soe";
 
@@ -86,7 +90,7 @@ public class FunctionalTests {
 
     @Test
     void canDisplayAllContacts() {
-        driver.get("http://localhost:3000");
+        driver.get("http://localhost:" + port);
 
         var expectedContact1 = "Pyi Soe";
         var expectedContact2 = "Jason Soe";
@@ -101,12 +105,14 @@ public class FunctionalTests {
         input.sendKeys(expectedContact2);
         button.click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        // Wait until at least one row appears
-        wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("#contact-table tbody tr")
-        ));
+        wait.until(d -> {
+            List<WebElement> rows = d.findElements(By.cssSelector("#contact-table tbody tr"));
+            return rows.size() == 2 &&
+                    rows.get(0).getText().equals(expectedContact1) &&
+                    rows.get(1).getText().equals(expectedContact2);
+        });
 
         List<WebElement> rows = driver.findElements(
                 By.cssSelector("#contact-table tbody tr")
