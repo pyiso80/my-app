@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 function App() {
 
     const [name, setName] = useState('');
-    const [result, setResult] = useState(null);
+    const [contacts, setContacts] = useState([]);
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevents the browser from reloading
@@ -20,7 +20,7 @@ function App() {
             });
 
             const data = await response.json();
-            setResult(data);
+            setContacts(data);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -40,8 +40,9 @@ function App() {
             </form>
             <table id="contact-table">
                 <tbody>
-                    <tr><td>Pyi Soe</td></tr>
-                    <tr><td>Jason Soe</td></tr>
+                {contacts.map(contact => (
+                    <tr><td key={contact.id}>{contact.name}</td></tr>
+                ))}
                 </tbody>
             </table>
         </>

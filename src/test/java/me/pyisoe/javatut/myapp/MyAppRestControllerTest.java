@@ -28,6 +28,6 @@ class MyAppRestControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value("Pyi Soe"));
+                .andExpect(jsonPath("$[0].name").value("Pyi Soe"));
     }
 }
