@@ -38,11 +38,12 @@ function App() {
                 />
                 <button type="submit">Submit</button>
             </form>
-            {result && (
-                <p id="result-text">
-                    Returned name: <strong>{result.name}</strong>
-                </p>
-            )}
+            <table id="contact-table">
+                <tbody>
+                    <tr><td>Pyi Soe</td></tr>
+                    <tr><td>Jason Soe</td></tr>
+                </tbody>
+            </table>
         </>
     )
 }
