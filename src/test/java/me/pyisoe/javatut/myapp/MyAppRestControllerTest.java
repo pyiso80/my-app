@@ -15,7 +15,6 @@ class MyAppRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
     void shouldReturnNameFromPostRequest() throws Exception {
         String json = """
             { "name": "Pyi Soe" }

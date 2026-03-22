@@ -101,11 +101,16 @@ public class FunctionalTests {
         WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
         button.click();
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(d ->
+                d.findElements(By.cssSelector("#contact-table tbody tr")).size() == 1
+        );
+
         input.clear();
         input.sendKeys(expectedContact2);
         button.click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
 
         wait.until(d -> {
             List<WebElement> rows = d.findElements(By.cssSelector("#contact-table tbody tr"));
