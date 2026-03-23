@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FunctionalTests {
@@ -65,27 +66,29 @@ public class FunctionalTests {
     void canAddNewContact() {
         driver.get("http://localhost:" + port);
 
-        var expectedContact1 = "Pyi Soe";
-
-        WebElement input = driver.findElement(By.id("name-input"));
-        input.sendKeys(expectedContact1);
+        WebElement firstNameInput = driver.findElement(By.name("firstName"));
+        WebElement lastNameInput = driver.findElement(By.name("lastName"));
+        WebElement phoneInput = driver.findElement(By.name("phone"));
+        WebElement emailInput = driver.findElement(By.name("email"));
+        firstNameInput.sendKeys("Pyi");
+        lastNameInput.sendKeys("Soe");
+        phoneInput.sendKeys("+9595005312");
+        emailInput.sendKeys("pyisoe@gmail.com");
 
         WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
         button.click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr td:nth-child(1)")));
 
-        // Wait until at least one row appears
-        wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("#contact-table tbody tr")
-        ));
 
         List<WebElement> rows = driver.findElements(
                 By.cssSelector("#contact-table tbody tr")
         );
 
         assertEquals(1, rows.size());
-        assertEquals(expectedContact1, rows.getFirst().findElements(By.tagName("td")).getFirst().getText());
+        String text = rows.getFirst().getDomProperty("innerHTML");
+        assertTrue(text != null && text.contains("Pyi") && text.contains("pyisoe@gmail.com"));
     }
 
     @Test
