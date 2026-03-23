@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
+import ContactForm from './ContactForm';
+import ContactTable from './ContactTable';
 
 function App() {
-
-    const [name, setName] = useState('');
     const [contacts, setContacts] = useState([]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevents the browser from reloading
-
-        const payload = { name: name };
+    const handleAddContact = async (name) => {
+        const payload = { name };
 
         try {
             const response = await fetch('/api', {
@@ -16,7 +14,7 @@ function App() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(payload), // Converts {name: "..."} to "{"name":"..."}"
+                body: JSON.stringify(payload),
             });
 
             const data = await response.json();
@@ -28,25 +26,10 @@ function App() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <input
-                    id="name-input"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter name"
-                />
-                <button type="submit">Submit</button>
-            </form>
-            <table id="contact-table">
-                <tbody>
-                {contacts.map(contact => (
-                    <tr><td key={contact.id}>{contact.name}</td></tr>
-                ))}
-                </tbody>
-            </table>
+            <ContactForm onSubmit={handleAddContact} />
+            <ContactTable contacts={contacts} />
         </>
-    )
+    );
 }
 
-export default App
+export default App;
