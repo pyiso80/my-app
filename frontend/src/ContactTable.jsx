@@ -6,7 +6,10 @@ function ContactTable({ contacts }) {
             <tbody>
             {contacts.map(contact => (
                 <tr key={contact.id}>
-                    <td>{contact.name}</td>
+                    <td>{contact.firstName}</td>
+                    <td>{contact.lastName}</td>
+                    <td>{contact.phone}</td>
+                    <td>{contact.email}</td>
                 </tr>
             ))}
             </tbody>
