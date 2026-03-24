@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17.9 # Or your preferred PostgreSQL version
+    container_name: postgres_instance
+    environment:
+      POSTGRES_DB: contacts_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432" # Host_port:Container_port
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+#
+#volumes:
+#  pgdata:

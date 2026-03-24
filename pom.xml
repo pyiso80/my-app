@@ -34,6 +34,8 @@
         <frontend-src-dir>${project.basedir}/frontend</frontend-src-dir>
         <node.version>v22.22.1</node.version>
         <jdbi.version>3.51.0</jdbi.version>
+        <postgresql.driver.version>42.7.9</postgresql.driver.version>
+        <flyway.version>12.1.1</flyway.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -92,6 +94,11 @@
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway.version}</version>
         </dependency>
     </dependencies>
 
@@ -164,6 +171,23 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/contacts_db1</url>
+                    <user>postgres</user>
+                    <password>postgres</password>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.driver.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
