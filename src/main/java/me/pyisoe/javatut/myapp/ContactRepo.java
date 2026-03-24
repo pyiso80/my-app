@@ -26,7 +26,7 @@ public class ContactRepo {
 
     public List<Contact> findAll() {
         return jdbi.withHandle(handle ->
-                handle.createQuery("SELECT id, name FROM contacts")
+                handle.createQuery("SELECT id, first_name, last_name, phone, email FROM contacts")
                         .mapToBean(Contact.class)
                         .list()
         );

@@ -35,12 +35,13 @@ public class BasicRepositoryTest {
 
     @Test
     void canFindAllContacts() {
-        contactRepo.insert(new Contact("Pyi Soe"));
-        contactRepo.insert(new Contact("Jason Soe"));
+        contactRepo.insert(new Contact("Pyi", "Soe", "+9595005312", "pyisoe@gmail.com"));
+        contactRepo.insert(new Contact("Jason", "Soe", "+9595005333", "jasonsoe@gmail.com"));
 
         List<Contact> contacts = contactRepo.findAll();
 
         assertEquals(2, contacts.size());
+        assertEquals("jasonsoe@gmail.com", contacts.get(1).getEmail());
     }
 
 }
