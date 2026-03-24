@@ -88,7 +88,6 @@ public class FunctionalTests {
 
         assertEquals(1, rows.size());
         String text = rows.getFirst().getDomProperty("innerHTML");
-        System.out.println(text);
         assertTrue(text != null && text.contains("Pyi") && text.contains("pyisoe@gmail.com"));
     }
 
@@ -96,44 +95,43 @@ public class FunctionalTests {
     void canDisplayAllContacts() {
         driver.get("http://localhost:" + port);
 
-        var expectedContact1 = "Pyi Soe";
-        var expectedContact2 = "Jason Soe";
-
-        WebElement input = driver.findElement(By.id("name-input"));
-        input.sendKeys(expectedContact1);
+        WebElement firstNameInput = driver.findElement(By.name("firstName"));
+        WebElement lastNameInput = driver.findElement(By.name("lastName"));
+        WebElement phoneInput = driver.findElement(By.name("phone"));
+        WebElement emailInput = driver.findElement(By.name("email"));
+        firstNameInput.sendKeys("Pyi");
+        lastNameInput.sendKeys("Soe");
+        phoneInput.sendKeys("+9595005312");
+        emailInput.sendKeys("pyisoe@gmail.com");
 
         WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
         button.click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(d ->
-                d.findElements(By.cssSelector("#contact-table tbody tr")).size() == 1
-        );
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr td:nth-child(1)")));
 
-        input.clear();
-        input.sendKeys(expectedContact2);
+
+        firstNameInput.clear();
+        firstNameInput.sendKeys("Jason");
+        lastNameInput.clear();
+        lastNameInput.sendKeys("Soe");
+        phoneInput.clear();
+        phoneInput.sendKeys("+9595005333");
+        emailInput.clear();
+        emailInput.sendKeys("jasonsoe@gmail.com");
+
         button.click();
 
-
-
-        wait.until(d -> {
-            List<WebElement> rows = d.findElements(By.cssSelector("#contact-table tbody tr"));
-            return rows.size() == 2 &&
-                    rows.get(0).getText().equals(expectedContact1) &&
-                    rows.get(1).getText().equals(expectedContact2);
-        });
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr td:nth-child(2)")));
 
         List<WebElement> rows = driver.findElements(
                 By.cssSelector("#contact-table tbody tr")
         );
-
-        // Assert
         assertEquals(2, rows.size());
-        assertEquals(expectedContact1,
-                rows.getFirst().findElements(By.tagName("td")).getFirst().getText());
-        assertEquals(expectedContact2,
-                rows.get(1).findElements(By.tagName("td")).getFirst().getText());
-
+        String text = rows.getFirst().getDomProperty("innerHTML");
+        assertTrue(text != null && text.contains("Pyi") && text.contains("pyisoe@gmail.com"));
+        text = rows.get(1).getDomProperty("innerHTML");
+        assertTrue(text != null && text.contains("Jason") && text.contains("jasonsoe@gmail.com"));
     }
 
 }
