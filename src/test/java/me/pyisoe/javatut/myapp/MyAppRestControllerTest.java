@@ -25,10 +25,10 @@ class MyAppRestControllerTest {
     @Test
     void shouldReturnNameFromPostRequest() throws Exception {
         String json = """
-            { "name": "Pyi Soe" }
+            { "firstName": "Pyi Soe" }
         """;
 
-        given(contactRepo.findAll()).willReturn(List.of(new Contact("Pyi Soe")));
+        given(contactRepo.findAll()).willReturn(List.of(new Contact("Pyi")));
         mockMvc.perform(
                         post("/api")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -36,6 +36,6 @@ class MyAppRestControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name").value("Pyi Soe"));
+                .andExpect(jsonPath("$[0].firstName").value("Pyi"));
     }
 }
