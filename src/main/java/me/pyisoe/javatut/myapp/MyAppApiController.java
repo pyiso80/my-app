@@ -10,8 +10,11 @@ import java.util.List;
 @RestController
 public class MyAppApiController {
 
-    @Autowired
-    ContactRepo contactRepo;
+    private final ContactRepo contactRepo;
+
+    public MyAppApiController(ContactRepo contactRepo) {
+        this.contactRepo = contactRepo;
+    }
 
     @PostMapping(path="/api", produces="application/json")
     public List<Contact> submitText(@RequestBody Contact contact) {

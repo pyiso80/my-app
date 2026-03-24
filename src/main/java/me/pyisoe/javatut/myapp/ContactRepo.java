@@ -9,8 +9,11 @@ import java.util.List;
 @Repository
 public class ContactRepo {
 
-    @Autowired
-    private Jdbi jdbi;
+    private final Jdbi jdbi;
+
+    public ContactRepo(Jdbi jdbi) {
+        this.jdbi = jdbi;
+    }
 
     public Integer insert(Contact contact) {
         String sql = """
