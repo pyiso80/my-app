@@ -42,9 +42,6 @@ public class BasicRepositoryTest {
 
         List<Contact> contacts = contactRepo.findAll();
 
-        System.out.println(contacts.getFirst());
-        System.out.println(contacts.get(1));
-
         assertEquals(2, contacts.size());
         assertEquals("jasonsoe@gmail.com", contacts.get(1).getEmail());
     }

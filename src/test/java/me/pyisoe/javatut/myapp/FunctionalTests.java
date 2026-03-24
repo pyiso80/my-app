@@ -47,7 +47,6 @@ public class FunctionalTests {
             long count = handle.createQuery("SELECT COUNT(*) FROM contacts")
                     .mapTo(Long.class)
                     .one();
-            System.out.println("DEBUG: Row count after truncate: " + count);
         });
     }
 
