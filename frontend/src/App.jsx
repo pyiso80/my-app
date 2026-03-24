@@ -5,8 +5,7 @@ import ContactTable from './ContactTable';
 function App() {
     const [contacts, setContacts] = useState([]);
 
-    const handleAddContact = async (name) => {
-        const payload = { name };
+    const handleAddContact = async (formData) => {
 
         try {
             const response = await fetch('/api', {
@@ -14,7 +13,7 @@ function App() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(formData),
             });
 
             const data = await response.json();

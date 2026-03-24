@@ -19,7 +19,6 @@ function ContactForm({ onSubmit }) {
             phone,
             email,
         };
-        console.log("Submitted:", formData);
         onSubmit(formData)
     };
 
