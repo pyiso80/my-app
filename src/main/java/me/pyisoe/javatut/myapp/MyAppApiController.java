@@ -15,7 +15,10 @@ public class MyAppApiController {
 
     @PostMapping(path="/api", produces="application/json")
     public List<Contact> submitText(@RequestBody Contact contact) {
+        System.out.println(contact);
         contactRepo.insert(contact);
+        var contacts = contactRepo.findAll();
+        System.out.println(contacts.getFirst());
         return contactRepo.findAll();
     }
 }

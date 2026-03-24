@@ -9,7 +9,6 @@ function App() {
         const payload = { name };
 
         try {
-            /*
             const response = await fetch('/api', {
                 method: 'POST',
                 headers: {
@@ -19,8 +18,8 @@ function App() {
             });
 
             const data = await response.json();
-             */
-            setContacts([{"firstName":"Pyi", "lastName":"Soe", "phone":"+9595005312", "email":"pyisoe@gmail.com"}]);
+            console.log(data)
+            setContacts(data);
         } catch (error) {
             console.error('Error:', error);
         }
