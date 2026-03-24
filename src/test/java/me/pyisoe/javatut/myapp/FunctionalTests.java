@@ -88,7 +88,6 @@ public class FunctionalTests {
 
         assertEquals(1, rows.size());
         String text = rows.getFirst().getDomProperty("innerHTML");
-        System.out.println(text);
         assertTrue(text != null && text.contains("Pyi") && text.contains("pyisoe@gmail.com"));
     }
 

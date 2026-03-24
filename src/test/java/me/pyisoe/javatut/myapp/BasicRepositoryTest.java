@@ -22,13 +22,13 @@ public class BasicRepositoryTest {
 
     @Test
     void shouldSaveAContact() {
-        contactRepo.insert(new Contact("Pyi Soe"));
+        contactRepo.insert(new Contact("Pyi", "Soe", "+9595005312", "pyisoe@gmail.com"));
         jdbi.useHandle(handle -> {
-            var count = handle.createQuery("SELECT COUNT(*) FROM contacts WHERE name = :name")
-                    .bind("name", "Pyi Soe")
+            var count = handle.createQuery("SELECT COUNT(*) FROM contacts WHERE first_name = :first_name AND last_name = :last_name")
+                    .bind("first_name", "Pyi")
+                    .bind("last_name", "Soe")
                     .mapTo(Integer.class)
                     .one();
-
             assert(count == 1);
         });
     }

@@ -14,8 +14,8 @@ public class ContactRepo {
 
     public Integer insert(Contact contact) {
         String sql = """
-                INSERT INTO contacts (name)
-                VALUES (:name)
+                INSERT INTO contacts (first_name, last_name, phone, email)
+                VALUES (:firstName, :lastName, :phone, :email)
                 """;
         return jdbi.withHandle(handle -> handle.createUpdate(sql)
                 .bindBean(contact)
