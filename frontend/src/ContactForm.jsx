@@ -1,12 +1,12 @@
 import React, {useRef} from 'react';
 
-function ContactForm({ onSubmit }) {
+function ContactForm({ setContacts }) {
     const firstNameRef = useRef(null);
     const lastNameRef = useRef(null);
     const emailRef = useRef(null);
     const phoneRef = useRef(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const firstName = firstNameRef.current.value;
         const lastName = lastNameRef.current.value;
@@ -19,7 +19,21 @@ function ContactForm({ onSubmit }) {
             phone,
             email,
         };
-        onSubmit(formData)
+        try {
+            const response = await fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+            console.log(data)
+            setContacts(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
