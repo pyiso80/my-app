@@ -15,13 +15,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.Duration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FunctionalTests {
@@ -131,6 +131,56 @@ public class FunctionalTests {
         assertTrue(text != null && text.contains("Pyi") && text.contains("pyisoe@gmail.com"));
         text = rows.get(1).getDomProperty("innerHTML");
         assertTrue(text != null && text.contains("Jason") && text.contains("jasonsoe@gmail.com"));
+    }
+
+    @Test
+    @Sql(scripts = "/contacts-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void canSearchContactsByFirstName() {
+        driver.get("http://localhost:" + port);
+
+        WebElement searchInput = driver.findElement(By.name("searchInput"));
+        searchInput.sendKeys("Pyi");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#contact-table tbody tr")
+        );
+
+        assertFalse(rows.isEmpty(), "No results found");
+
+        // Verify at least one row contains "Pyi"
+        boolean matchFound = rows.stream()
+                .anyMatch(row -> row.getText().contains("Pyi"));
+
+        assertTrue(matchFound, "Expected first name not found in results");
+    }
+
+    void canSearchContactsByLastName() {
+        driver.get("http://localhost:" + port);
+
+        WebElement searchInput = driver.findElement(By.name("searchInput"));
+        searchInput.sendKeys("Pyi");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr td:nth-child(1)")));
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#contact-table tbody tr")
+        );
+
+        assertFalse(rows.isEmpty(), "No results found");
+
+        // Verify at least one row contains "Pyi"
+        boolean matchFound = rows.stream()
+                .anyMatch(row -> row.getText().contains("Pyi"));
+
+        assertTrue(matchFound, "Expected first name not found in results");
     }
 
 }

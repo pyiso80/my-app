@@ -1,6 +1,5 @@
 package me.pyisoe.javatut.myapp;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ public class MyAppApiController {
     }
 
     @PostMapping(path="/api", produces="application/json")
-    public List<Contact> submitText(@RequestBody Contact contact) {
+    public List<Contact> addNewContact(@RequestBody Contact contact) {
         contactRepo.insert(contact);
         return contactRepo.findAll();
     }
