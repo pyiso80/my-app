@@ -136,9 +136,9 @@ public class FunctionalTests {
     @Test
     @Sql(scripts = "/contacts-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void canSearchContactsByFirstName() {
-        driver.get("http://localhost:" + port);
+        driver.get("http://localhost:" + port + "/contacts");
 
-        WebElement searchInput = driver.findElement(By.name("searchInput"));
+        WebElement searchInput = driver.findElement(By.name("keyword"));
         searchInput.sendKeys("Pyi");
         WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
         button.click();
@@ -162,7 +162,7 @@ public class FunctionalTests {
     void canSearchContactsByLastName() {
         driver.get("http://localhost:" + port);
 
-        WebElement searchInput = driver.findElement(By.name("searchInput"));
+        WebElement searchInput = driver.findElement(By.name("keyword"));
         searchInput.sendKeys("Pyi");
         WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
         button.click();
