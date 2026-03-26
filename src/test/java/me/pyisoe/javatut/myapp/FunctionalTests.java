@@ -1,7 +1,6 @@
 package me.pyisoe.javatut.myapp;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.jdbc.Sql;
@@ -22,8 +20,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(scripts = "/cleanup.sql", executionPhase = BEFORE_TEST_METHOD)
 public class FunctionalTests {
 
 
@@ -31,8 +31,6 @@ public class FunctionalTests {
     int port;
 
     WebDriver driver;
-    @Autowired
-    Jdbi jdbi;
 
     @BeforeAll
     static void setupClass() {
@@ -42,12 +40,6 @@ public class FunctionalTests {
     @BeforeEach
     void setup() {
         driver = new ChromeDriver();
-        jdbi.useHandle(handle -> {
-            handle.execute("TRUNCATE TABLE contacts");
-            long count = handle.createQuery("SELECT COUNT(*) FROM contacts")
-                    .mapTo(Long.class)
-                    .one();
-        });
     }
 
     @AfterEach
@@ -134,7 +126,7 @@ public class FunctionalTests {
     }
 
     @Test
-    @Sql(scripts = "/contacts-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/contacts-data.sql")
     void canSearchContactsByFirstName() {
         driver.get("http://localhost:" + port + "/contacts");
 

@@ -18,3 +18,19 @@ Single Method	    mvn test -Dtest=MyTest#testOne
 Pattern Match       mvn test -Dtest=Service*
 Multiple Classes    mvn test -Dtest=TestA,TestB
 ```
+
+## Order of execution
+
+Here is the precise sequence of events for a single test method:
+
+`@Sql` (Class-level): If `MERGE` mode is enabled.
+
+`@Sql` (Method-level): Your `contacts-data.sql` runs here.
+
+`@BeforeEach`: Your JUnit setup code runs.
+
+`@Test`: The actual Selenium test method.
+
+`@AfterEach`: Cleanup code.
+
+`@Sql (AFTER_TEST_METHOD)`: If you have any cleanup scripts defined.

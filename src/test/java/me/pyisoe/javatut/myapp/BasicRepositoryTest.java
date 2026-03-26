@@ -3,9 +3,9 @@ package me.pyisoe.javatut.myapp;
 import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
@@ -43,6 +43,14 @@ public class BasicRepositoryTest {
 
         assertEquals(2, contacts.size());
         assertEquals("jasonsoe@gmail.com", contacts.get(1).getEmail());
+    }
+
+    @Test
+    @Sql(scripts = "classpath:contacts-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void canFindContactByName() {
+        List<Contact> contacts = contactRepo.findByName("Pyi");
+        assertEquals(1, contacts.size());
+        assertEquals("Pyi", contacts.getFirst().getFirstName());
     }
 
 }

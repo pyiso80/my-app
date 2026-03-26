@@ -1,3 +1,5 @@
+-- TRUNCATE TABLE contacts;
+
 INSERT INTO contacts (first_name, last_name, phone, email)
 VALUES ('Pyi', 'Soe', '+9595000001', 'pyi.soe@example.com'),
        ('John', 'Doe', '+12025550123', 'john.doe@example.com'),

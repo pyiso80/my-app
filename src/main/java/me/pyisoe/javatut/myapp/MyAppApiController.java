@@ -21,6 +21,6 @@ public class MyAppApiController {
 
     @GetMapping(path="/api/contacts", produces="application/json")
     public List<Contact> searchContact(@RequestParam String keyword) {
-        return List.of(new Contact("Pyi", "Soe", "", ""));
+        return contactRepo.findByName(keyword);
     }
 }
