@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 
 
-function ContactSearch() {
+function ContactSearch({ setContacts }) {
     const searchInputRef = useRef(null)
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -9,10 +9,11 @@ function ContactSearch() {
 
         try {
             const response = await fetch(
-                `/api/contacts?keyword=${encodeURIComponent(keyword)}`
+                `/api/contacts?keyword=${encodeURIComponent(keyword)}`,
             );
 
             const data = await response.json();
+            setContacts(data);
         } catch (err) {
             console.error("Error fetching contacts:", err);
         }
@@ -20,8 +21,10 @@ function ContactSearch() {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Search:</label><br />
                 <input type="text" name="keyword" ref={searchInputRef} />
+            </div>
+            <div>
+                <button type="submit">Search</button>
             </div>
         </form>
     );

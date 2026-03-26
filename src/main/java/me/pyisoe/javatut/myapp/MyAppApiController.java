@@ -1,8 +1,6 @@
 package me.pyisoe.javatut.myapp;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +17,10 @@ public class MyAppApiController {
     public List<Contact> addNewContact(@RequestBody Contact contact) {
         contactRepo.insert(contact);
         return contactRepo.findAll();
+    }
+
+    @GetMapping(path="/api/contacts", produces="application/json")
+    public List<Contact> searchContact(@RequestParam String keyword) {
+        return List.of(new Contact("Pyi", "Soe", "", ""));
     }
 }
