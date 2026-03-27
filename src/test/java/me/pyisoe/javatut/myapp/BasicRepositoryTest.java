@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -50,6 +51,15 @@ public class BasicRepositoryTest {
         List<Contact> contacts = contactRepo.findByName("Pyi");
         assertEquals(1, contacts.size());
         assertEquals("Pyi", contacts.getFirst().getFirstName());
+    }
+
+    @Test
+    @Sql(scripts = "classpath:contacts-data.sql")
+    void canDeleteById() {
+        var results1 = contactRepo.findAll();
+        contactRepo.deleteById(results1.get(2).getId());
+        var result2 = contactRepo.findAll();
+        assertEquals(1, results1.size() - result2.size());
     }
 
 }
