@@ -210,4 +210,45 @@ public class FunctionalTests {
         assertTrue(noResult.isEmpty());
     }
 
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void update_existing_contact() {
+        driver.get("http://localhost:" + port + "/contacts");
+
+        WebElement searchInput = driver.findElement(By.name("keyword"));
+        searchInput.sendKeys("Pyi");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        WebElement deleteButton = driver.findElement(
+                By.id("#delete-contact-button-2")
+        );
+        deleteButton.click();
+
+        // 3. Wait for the Modal Overlay to be visible
+        WebElement modal = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.className("modal-overlay"))
+        );
+
+        // 4. Locate and click the "Confirm" button INSIDE the modal
+        WebElement confirmBtn = modal.findElement(By.className("confirm-button"));
+        confirmBtn.click();
+
+        // 5. Verify the modal is gone (Optional but recommended)
+        wait.until(ExpectedConditions.invisibilityOf(modal));
+
+        searchInput.clear();
+        searchInput.sendKeys("Pyi");
+        button.click();
+
+        List<WebElement> elements = driver.findElements(
+                By.id("search-result-msg")
+        );
+        assertTrue(elements.getFirst().getText().toLowerCase().contains("no result"));
+    }
+
+
 }

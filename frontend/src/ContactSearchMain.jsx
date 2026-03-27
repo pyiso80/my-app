@@ -10,7 +10,7 @@ function ContactSearchMain() {
     return (
         <>
             <ContactSearch setContacts={setContacts}/>
-            {contacts?.length > 0 ? (<ContactTable contacts={contacts} />) : (<p id="search-result-msg">No Result</p>)}
+            {contacts?.length > 0 ? (<ContactTable contacts={contacts}/>) : (<p id="search-result-msg">No Result</p>)}
         </>
     );
 }
