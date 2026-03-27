@@ -38,7 +38,13 @@ public class ContactRepo {
 
     public List<Contact> findByName(String name) {
         return jdbi.withHandle(handle ->
-                handle.createQuery("SELECT id, first_name, last_name, phone, email FROM contacts WHERE first_name LIKE '%' || :name || '%' OR last_name LIKE '%' || :name || '%'")
+                handle.createQuery("""
+                                SELECT
+                                    id, first_name, last_name, phone, email
+                                FROM contacts
+                                WHERE first_name LIKE '%' || :name || '%'
+                                      OR last_name LIKE '%' || :name || '%'
+                                """)
                         .bind("name", name)
                         .mapToBean(me.pyisoe.javatut.myapp.Contact.class)
                         .list()

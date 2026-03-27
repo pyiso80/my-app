@@ -34,3 +34,6 @@ Here is the precise sequence of events for a single test method:
 `@AfterEach`: Cleanup code.
 
 `@Sql (AFTER_TEST_METHOD)`: If you have any cleanup scripts defined.
+
+## Transaction behavior in tests and real deployment 
+TO-DO > to explain how spring manage transactions in tests

@@ -127,11 +127,11 @@ public class FunctionalTests {
 
     @Test
     @Sql(scripts = "/contacts-data.sql")
-    void canSearchContactsByFirstName() {
+    void search_by_name_found_only_matching_contacts() {
         driver.get("http://localhost:" + port + "/contacts");
 
         WebElement searchInput = driver.findElement(By.name("keyword"));
-        searchInput.sendKeys("Pyi");
+        searchInput.sendKeys("Soe");
         WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
         button.click();
 
@@ -146,33 +146,10 @@ public class FunctionalTests {
 
         // Verify at least one row contains "Pyi"
         boolean matchFound = rows.stream()
-                .anyMatch(row -> row.getText().contains("Pyi"));
+                .anyMatch(row -> row.getText().contains("Soe"));
 
         assertTrue(matchFound, "Expected first name not found in results");
-    }
-
-    void canSearchContactsByLastName() {
-        driver.get("http://localhost:" + port);
-
-        WebElement searchInput = driver.findElement(By.name("keyword"));
-        searchInput.sendKeys("Pyi");
-        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
-        button.click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr td:nth-child(1)")));
-
-        List<WebElement> rows = driver.findElements(
-                By.cssSelector("#contact-table tbody tr")
-        );
-
-        assertFalse(rows.isEmpty(), "No results found");
-
-        // Verify at least one row contains "Pyi"
-        boolean matchFound = rows.stream()
-                .anyMatch(row -> row.getText().contains("Pyi"));
-
-        assertTrue(matchFound, "Expected first name not found in results");
+        assertEquals(2, rows.size());
     }
 
 }
