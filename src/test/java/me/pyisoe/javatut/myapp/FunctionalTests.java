@@ -152,4 +152,62 @@ public class FunctionalTests {
         assertEquals(2, rows.size());
     }
 
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void search_by_name_found_all_contacts_for_empty_string() {
+        driver.get("http://localhost:" + port + "/contacts");
+
+        WebElement searchInput = driver.findElement(By.name("keyword"));
+        searchInput.sendKeys("");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#contact-table tbody tr")
+        );
+        assertEquals(6, rows.size());
+    }
+
+    @Test
+    @Sql(scripts = "/cleanup.sql")
+    void search_by_name_show_correct_message_if_no_contact_found() {
+
+        driver.get("http://localhost:" + port + "/contacts");
+
+        WebElement searchInput = driver.findElement(By.name("keyword"));
+        searchInput.sendKeys("Vladimir");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("search-result-msg")));
+
+        List<WebElement> elements = driver.findElements(
+                By.id("search-result-msg")
+        );
+        assertTrue(elements.getFirst().getText().toLowerCase().contains("no result"));
+    }
+
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void search_by_name_should_not_show_no_result_message_if_any_found() {
+        driver.get("http://localhost:" + port + "/contacts");
+
+        WebElement searchInput = driver.findElement(By.name("keyword"));
+        searchInput.sendKeys("Soe");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        List<WebElement> noResult = driver.findElements(
+                By.id("search-result-msg")
+        );
+        assertTrue(noResult.isEmpty());
+    }
+
 }
