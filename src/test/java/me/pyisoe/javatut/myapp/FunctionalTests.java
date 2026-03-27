@@ -212,21 +212,21 @@ public class FunctionalTests {
 
     @Test
     @Sql(scripts = "/contacts-data.sql")
-    void update_existing_contact() {
+    void delete_existing_contact() {
         driver.get("http://localhost:" + port + "/contacts");
 
         WebElement searchInput = driver.findElement(By.name("keyword"));
-        searchInput.sendKeys("Pyi");
+        searchInput.sendKeys("");
         WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
         button.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
 
-        WebElement deleteButton = driver.findElement(
-                By.id("#delete-contact-button-2")
+        WebElement rowToDelete = driver.findElement(
+                By.xpath("//table[@id='contact-table']//tbody/tr[3]")
         );
-        deleteButton.click();
+        var deleteButton = rowToDelete.findElement(By.cssSelector("[data-testid='delete-contact']"));
 
         // 3. Wait for the Modal Overlay to be visible
         WebElement modal = wait.until(
