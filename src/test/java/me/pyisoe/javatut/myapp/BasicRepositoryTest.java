@@ -22,6 +22,7 @@ public class BasicRepositoryTest {
     private Jdbi jdbi; //
 
     @Test
+    @Sql(scripts = "classpath:cleanup.sql")
     void shouldSaveAContact() {
         contactRepo.insert(new Contact("Pyi", "Soe", "+9595005312", "pyisoe@gmail.com"));
         jdbi.useHandle(handle -> {
@@ -35,14 +36,12 @@ public class BasicRepositoryTest {
     }
 
     @Test
+    @Sql(scripts = "classpath:contacts-data.sql")
     void canFindAllContacts() {
-        contactRepo.insert(new Contact("Pyi", "Soe", "+9595005312", "pyisoe@gmail.com"));
-        contactRepo.insert(new Contact("Jason", "Soe", "+9595005333", "jasonsoe@gmail.com"));
-
         List<Contact> contacts = contactRepo.findAll();
 
-        assertEquals(2, contacts.size());
-        assertEquals("jasonsoe@gmail.com", contacts.get(1).getEmail());
+        assertEquals(6, contacts.size());
+        assertEquals("john.doe@example.com", contacts.get(1).getEmail());
     }
 
     @Test
