@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -228,26 +229,20 @@ public class FunctionalTests {
         );
         var deleteButton = rowToDelete.findElement(By.cssSelector("[data-testid='delete-contact']"));
 
-        // 3. Wait for the Modal Overlay to be visible
-        WebElement modal = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.className("modal-overlay"))
+        // switch to confirm dialog and accept
+        deleteButton.click();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#contact-table tbody tr")
         );
 
-        // 4. Locate and click the "Confirm" button INSIDE the modal
-        WebElement confirmBtn = modal.findElement(By.className("confirm-button"));
-        confirmBtn.click();
-
-        // 5. Verify the modal is gone (Optional but recommended)
-        wait.until(ExpectedConditions.invisibilityOf(modal));
-
-        searchInput.clear();
-        searchInput.sendKeys("Pyi");
-        button.click();
-
-        List<WebElement> elements = driver.findElements(
-                By.id("search-result-msg")
-        );
-        assertTrue(elements.getFirst().getText().toLowerCase().contains("no result"));
+        assertFalse(rows.isEmpty(), "No results found");
+        assertEquals(5, rows.size());
+        boolean matchFound = rows.stream()
+                .noneMatch(row -> row.getText().contains("jane.doe@example.com"));
+        assertTrue(matchFound, "Delete row still in table!");
     }
 
 

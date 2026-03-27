@@ -1,9 +1,6 @@
 import React from 'react';
 
-function ContactTable({ contacts }) {
-    const handleDelete = (id) => {
-
-    };
+function ContactTable({ contacts, onDelete }) {
     return (
         <table id="contact-table">
             <tbody>
@@ -17,7 +14,7 @@ function ContactTable({ contacts }) {
                         <button
                             type="button"
                             data-testid="delete-contact"
-                            onClick={() => handleDelete(contact.id)}
+                            onClick={() => onDelete(contact.id)}
                         >
                             Delete
                         </button>
