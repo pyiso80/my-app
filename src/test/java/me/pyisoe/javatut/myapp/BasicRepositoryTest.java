@@ -62,4 +62,14 @@ public class BasicRepositoryTest {
         assertEquals(1, results1.size() - result2.size());
     }
 
+    @Test
+    @Sql(scripts = "classpath:contacts-data.sql")
+    void canUpdateById() {
+        var results1 = contactRepo.findAll();
+        var toUpdate = results1.get(2);
+        toUpdate.setFirstName("New Name");
+        contactRepo.update(results1.get(2).getId(), toUpdate);
+        assertEquals("New Name", contactRepo.findById(toUpdate.getId()).map(Contact::getFirstName).orElse("No contact found"));
+    }
+
 }

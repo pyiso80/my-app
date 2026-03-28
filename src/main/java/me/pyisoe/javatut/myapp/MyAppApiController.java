@@ -20,6 +20,20 @@ public class MyAppApiController {
         return contactRepo.findAll();
     }
 
+    @PutMapping(path = "/api/contacts/{id}")
+    public ResponseEntity<Contact> updateContact(@RequestBody Contact contact, @PathVariable Long id) {
+        int rows = contactRepo.update(id, contact);
+
+        if (rows == 0) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // fetch updated object
+        return contactRepo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping(path = "/api/contacts", produces = "application/json")
     public List<Contact> searchContact(@RequestParam String keyword) {
         return contactRepo.findByName(keyword);

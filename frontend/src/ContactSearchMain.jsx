@@ -16,18 +16,19 @@ function ContactSearchMain() {
     };
 
     const handleSave = async (updatedContact) => {
-        /*
-        await fetch(`/api/contacts/${updatedContact.id}`, {
+
+        const response = await fetch(`/api/contacts/${updatedContact.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(updatedContact),
         });
-         */
+
+        const updatedFromServer = await response.json();
 
         const updatedContacts = contacts.map(c =>
-            c.id === updatedContact.id ? updatedContact : c
+            c.id === updatedFromServer.id ? updatedFromServer : c
         );
         setContacts(updatedContacts)
         handleClose();

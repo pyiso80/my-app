@@ -273,6 +273,7 @@ public class FunctionalTests {
         driver.findElement(By.cssSelector("[data-testid='update-contact-button']")).click();
 
         // 3. Verify the 3rd row now shows "New Name"
+        // This wait has problem, has to fix
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
         WebElement updatedCell = driver.findElement(By.xpath("//table[@id='contact-table']//tr[3]/td[1]"));
         assertEquals("New Name", updatedCell.getText());
