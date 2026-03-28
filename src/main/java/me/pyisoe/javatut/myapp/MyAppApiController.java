@@ -25,7 +25,7 @@ public class MyAppApiController {
         return contactRepo.findByName(keyword);
     }
 
-    @DeleteMapping(path = "/api/contacts/{id}", produces = "application/json")
+    @DeleteMapping(path = "/api/contacts/{id}")
     public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
         int cnt = contactRepo.deleteById(id);
 
