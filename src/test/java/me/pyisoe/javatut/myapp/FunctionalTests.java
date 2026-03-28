@@ -234,6 +234,7 @@ public class FunctionalTests {
         Alert alert = driver.switchTo().alert();
         alert.accept();
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
         List<WebElement> rows = driver.findElements(
                 By.cssSelector("#contact-table tbody tr")
         );

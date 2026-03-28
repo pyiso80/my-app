@@ -7,8 +7,7 @@ function ContactSearchMain() {
     const handleDelete = async (id) => {
         try {
             window.confirm("Are you sure to delete?")
-            setContacts(contacts.filter((_, index) => index !== 2))
-            const response = await fetch(`/contacts/${id}`, {
+            const response = await fetch(`/api/contacts/${id}`, {
                 method: 'DELETE',
             });
 
@@ -17,6 +16,7 @@ function ContactSearchMain() {
             }
 
             console.log(`Deleted contact ${id}`);
+            setContacts(contacts.filter((it) => it.id !== id))
         } catch (error) {
             console.error(error);
         }

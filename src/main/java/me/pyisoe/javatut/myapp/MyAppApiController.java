@@ -23,4 +23,9 @@ public class MyAppApiController {
     public List<Contact> searchContact(@RequestParam String keyword) {
         return contactRepo.findByName(keyword);
     }
+
+    @DeleteMapping(path="/api/contacts/{id}", produces="application/json")
+    public void deleteContact(@PathVariable Long id) {
+        contactRepo.deleteById(id);
+    }
 }
