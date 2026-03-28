@@ -246,5 +246,37 @@ public class FunctionalTests {
         assertTrue(matchFound, "Delete row still in table!");
     }
 
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void update_contact() {
+        driver.get("http://localhost:" + port + "/contacts");
+
+        WebElement searchInput = driver.findElement(By.name("keyword"));
+        searchInput.sendKeys("");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        WebElement rowToDelete = driver.findElement(
+                By.xpath("//table[@id='contact-table']//tbody/tr[3]")
+        );
+        var updateButton = rowToDelete.findElement(By.cssSelector("[data-testid='update-contact']"));
+
+        updateButton.click();
+
+        // 2. Wait for modal and update Name field
+        WebElement nameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-name")));
+        nameInput.clear();
+        nameInput.sendKeys("New Name");
+        driver.findElement(By.id("save-btn")).click();
+
+        // 3. Verify the 3rd row now shows "New Name"
+        WebElement updatedCell = driver.findElement(By.xpath("//table[@id='contact-table']//tr[3]/td[2]"));
+        assertEquals("New Name", updatedCell.getText());
+
+    }
+
 
 }
