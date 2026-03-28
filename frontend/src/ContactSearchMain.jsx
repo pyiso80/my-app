@@ -1,9 +1,38 @@
 import React, {useState} from 'react';
 import ContactTable from './ContactTable';
 import ContactSearch from "./ContactSearch.jsx";
+import ContactEditModal from "./ContactEditModal.jsx";
 
 function ContactSearchMain() {
     const [contacts, setContacts] = useState(null);
+    const [editingContact, setEditingContact] = useState(null);
+
+    const handleEditClick = (contact) => {
+        setEditingContact(contact);
+    };
+
+    const handleClose = () => {
+        setEditingContact(null);
+    };
+
+    const handleSave = async (updatedContact) => {
+        /*
+        await fetch(`/api/contacts/${updatedContact.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedContact),
+        });
+         */
+
+        const updatedContacts = contacts.map(c =>
+            c.id === updatedContact.id ? updatedContact : c
+        );
+        setContacts(updatedContacts)
+        handleClose();
+    };
+
     const handleDelete = async (id) => {
         try {
             window.confirm("Are you sure to delete?")
@@ -27,7 +56,14 @@ function ContactSearchMain() {
     return (
         <>
             <ContactSearch setContacts={setContacts}/>
-            {contacts?.length > 0 ? (<ContactTable contacts={contacts} onDelete={handleDelete} />) : (<p id="search-result-msg">No Result</p>)}
+            {contacts?.length > 0 ? (<ContactTable contacts={contacts} onDelete={handleDelete} onEdit={handleEditClick} />) : (<p id="search-result-msg">No Result</p>)}
+            {editingContact && (
+                <ContactEditModal
+                    contact={editingContact}
+                    onClose={handleClose}
+                    onSave={handleSave}
+                />
+            )}
         </>
     );
 }

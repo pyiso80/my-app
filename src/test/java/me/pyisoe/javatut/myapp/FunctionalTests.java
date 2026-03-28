@@ -259,21 +259,22 @@ public class FunctionalTests {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
 
-        WebElement rowToDelete = driver.findElement(
+        WebElement rowToUpdate = driver.findElement(
                 By.xpath("//table[@id='contact-table']//tbody/tr[3]")
         );
-        var updateButton = rowToDelete.findElement(By.cssSelector("[data-testid='update-contact']"));
+        var updateButton = rowToUpdate.findElement(By.cssSelector("[data-testid='update-contact']"));
 
         updateButton.click();
 
         // 2. Wait for modal and update Name field
-        WebElement nameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-name")));
+        WebElement nameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("firstName")));
         nameInput.clear();
         nameInput.sendKeys("New Name");
-        driver.findElement(By.id("save-btn")).click();
+        driver.findElement(By.cssSelector("[data-testid='update-contact-button']")).click();
 
         // 3. Verify the 3rd row now shows "New Name"
-        WebElement updatedCell = driver.findElement(By.xpath("//table[@id='contact-table']//tr[3]/td[2]"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+        WebElement updatedCell = driver.findElement(By.xpath("//table[@id='contact-table']//tr[3]/td[1]"));
         assertEquals("New Name", updatedCell.getText());
 
     }

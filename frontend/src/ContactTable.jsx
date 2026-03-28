@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ContactTable({ contacts, onDelete, onUpdate }) {
+function ContactTable({ contacts, onDelete, onEdit }) {
     return (
         <table id="contact-table">
             <tbody>
@@ -23,7 +23,7 @@ function ContactTable({ contacts, onDelete, onUpdate }) {
                         <button
                             type="button"
                             data-testid="update-contact"
-                            onClick={() => onUpdate(contact.id)}
+                            onClick={() => onEdit(contact)}
                         >
                             Edit
                         </button>
