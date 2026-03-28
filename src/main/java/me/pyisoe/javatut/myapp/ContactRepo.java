@@ -51,8 +51,8 @@ public class ContactRepo {
         );
     }
 
-    public void deleteById(Long id) {
-        jdbi.withHandle(handle ->
+    public int deleteById(Long id) {
+        return jdbi.withHandle(handle ->
                 handle.createUpdate("DELETE FROM contacts WHERE id = :id")
                         .bind("id", id)
                         .execute()
