@@ -30,7 +30,7 @@ class MyAppRestControllerTest {
 
         given(contactRepo.findAll()).willReturn(List.of(new Contact("Pyi")));
         mockMvc.perform(
-                        post("/api")
+                        post("/api/contacts")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json)
                 )

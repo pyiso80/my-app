@@ -14,7 +14,7 @@ public class MyAppApiController {
         this.contactRepo = contactRepo;
     }
 
-    @PostMapping(path = "/api", produces = "application/json")
+    @PostMapping(path = "/api/contacts", produces = "application/json")
     public List<Contact> addNewContact(@RequestBody Contact contact) {
         contactRepo.insert(contact);
         return contactRepo.findAll();
