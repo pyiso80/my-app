@@ -85,7 +85,7 @@ public class FunctionalTests {
 
     @Test
     void canDisplayAllContacts() {
-        driver.get("http://localhost:" + port + "/contacts");
+        driver.get("http://localhost:" + port + "/contacts/new");
 
         WebElement firstNameInput = driver.findElement(By.name("firstName"));
         WebElement lastNameInput = driver.findElement(By.name("lastName"));
