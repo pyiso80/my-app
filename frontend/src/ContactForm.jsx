@@ -20,7 +20,7 @@ function ContactForm({ setContacts }) {
             email,
         };
         try {
-            const response = await fetch('/api', {
+            const response = await fetch('/api/contacts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
