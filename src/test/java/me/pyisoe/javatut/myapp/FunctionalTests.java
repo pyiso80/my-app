@@ -283,5 +283,30 @@ public class FunctionalTests {
 
     }
 
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void browser_url_reflect_when_click_edit() {
+        driver.get("http://localhost:" + port + "/contacts");
+
+        WebElement searchInput = driver.findElement(By.name("keyword"));
+        searchInput.sendKeys("");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        WebElement rowToUpdate = driver.findElement(
+                By.xpath("//table[@id='contact-table']//tbody/tr[3]")
+        );
+        var updateButton = rowToUpdate.findElement(By.cssSelector("[data-testid='update-contact']"));
+
+        updateButton.click();
+
+        wait.until(ExpectedConditions.urlMatches(".*/contacts/\\d+/edit"));
+        String url = driver.getCurrentUrl();
+        assertTrue(url.matches(".*/contacts/\\d+/edit"));
+    }
+
 
 }

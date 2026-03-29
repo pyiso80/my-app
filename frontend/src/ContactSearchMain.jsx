@@ -2,12 +2,15 @@ import React, {useState} from 'react';
 import ContactTable from './ContactTable';
 import ContactSearch from "./ContactSearch.jsx";
 import ContactEditModal from "./ContactEditModal.jsx";
+import { useNavigate } from 'react-router';
 
 function ContactSearchMain() {
     const [contacts, setContacts] = useState(null);
     const [editingContact, setEditingContact] = useState(null);
+    const navigate = useNavigate();
 
     const handleEditClick = (contact) => {
+        navigate(`/contacts/${contact.id}/edit`)
         setEditingContact(contact);
     };
 
