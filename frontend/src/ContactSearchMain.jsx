@@ -1,21 +1,18 @@
 import React, {useState} from 'react';
 import ContactTable from './ContactTable';
 import ContactSearch from "./ContactSearch.jsx";
-import ContactEditModal from "./ContactEditModal.jsx";
-import { useNavigate } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 
 function ContactSearchMain() {
     const [contacts, setContacts] = useState(null);
-    const [editingContact, setEditingContact] = useState(null);
     const navigate = useNavigate();
 
     const handleEditClick = (contact) => {
         navigate(`/contacts/${contact.id}/edit`)
-        setEditingContact(contact);
     };
 
     const handleClose = () => {
-        setEditingContact(null);
+        navigate(-1);
     };
 
     const handleSave = async (updatedContact) => {
@@ -61,13 +58,7 @@ function ContactSearchMain() {
         <>
             <ContactSearch setContacts={setContacts}/>
             {contacts?.length > 0 ? (<ContactTable contacts={contacts} onDelete={handleDelete} onEdit={handleEditClick} />) : (<p id="search-result-msg">No Result</p>)}
-            {editingContact && (
-                <ContactEditModal
-                    contact={editingContact}
-                    onClose={handleClose}
-                    onSave={handleSave}
-                />
-            )}
+            <Outlet context={{ contacts, handleSave, handleClose }}/>
         </>
     );
 }

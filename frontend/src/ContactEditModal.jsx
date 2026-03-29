@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from "react";
 import "./ContactEditModal.css";
+import { useParams, useOutletContext } from "react-router";
 
-function ContactEditModal({contact, onClose, onSave}) {
+function ContactEditModal() {
+    const { id } = useParams();
+    const { contacts, handleSave, handleClose } = useOutletContext();
+
+    const contact = contacts.find(c => c.id === Number(id));
     const [form, setForm] = useState(contact);
 
     // If contact changes, sync form
@@ -17,7 +22,7 @@ function ContactEditModal({contact, onClose, onSave}) {
     };
 
     const handleSubmit = () => {
-        onSave(form);
+        handleSave(form);
     };
 
     return (
@@ -62,7 +67,7 @@ function ContactEditModal({contact, onClose, onSave}) {
                     </div>
                     <div>
                         <button data-testid="update-contact-button" onClick={handleSubmit}>Save</button>
-                        <button onClick={onClose}>Cancel</button>
+                        <button onClick={handleClose}>Cancel</button>
                     </div>
                 </div>
             </div>
