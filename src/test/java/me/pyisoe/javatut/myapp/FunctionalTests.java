@@ -326,6 +326,7 @@ public class FunctionalTests {
         var updateButton = rowToUpdate.findElement(By.cssSelector("[data-testid='update-contact']"));
 
         updateButton.click();
+        fail("Not fully implemented yet!");
     }
 
     @Test
