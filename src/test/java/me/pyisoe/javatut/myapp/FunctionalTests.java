@@ -332,6 +332,7 @@ public class FunctionalTests {
     @Sql(scripts = "/contacts-data.sql")
     void search_bookmark_url() {
         driver.get("http://localhost:" + port + "/contacts?keyword=Doe");
+        WebElement searchInput = driver.findElement(By.name("keyword"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
 
@@ -339,6 +340,7 @@ public class FunctionalTests {
                 By.cssSelector("#contact-table tbody tr")
         );
 
+        assertEquals("Doe", searchInput.getAttribute("value"));
         assertEquals(2, rows.size());
         assertTrue(rows.getFirst().getText().contains("john.doe@example.com"));
         assertTrue(rows.get(1).getText().contains("jane.doe@example.com"));

@@ -2,14 +2,14 @@ import React, {useRef} from 'react';
 import { useNavigate } from 'react-router';
 
 
-function ContactSearch({ setContacts }) {
+function ContactSearch({ setContacts, searchInput, setSearchInput }) {
     const searchInputRef = useRef(null)
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const keyword = searchInputRef.current.value;
-
+        setSearchInput(keyword)
         try {
             navigate(`/contacts?keyword=${encodeURIComponent(keyword)}`)
             const response = await fetch(
@@ -25,7 +25,7 @@ function ContactSearch({ setContacts }) {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <input type="text" name="keyword" ref={searchInputRef} />
+                <input type="text" name="keyword" ref={searchInputRef} defaultValue={searchInput}/>
             </div>
             <div>
                 <button type="submit">Search</button>

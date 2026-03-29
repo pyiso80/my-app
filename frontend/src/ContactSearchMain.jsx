@@ -5,6 +5,8 @@ import {Outlet, useNavigate, useSearchParams} from 'react-router';
 
 function ContactSearchMain() {
     const [contacts, setContacts] = useState(null);
+    const [searchInput, setSearchInput] = useState(null);
+
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const search = searchParams.get("keyword") || "";
@@ -65,7 +67,7 @@ function ContactSearchMain() {
     }
     return (
         <>
-            <ContactSearch setContacts={setContacts}/>
+            <ContactSearch setContacts={setContacts} searchInput={search} setSearchInput={setSearchInput}/>
             {contacts?.length > 0 ? (<ContactTable contacts={contacts} onDelete={handleDelete} onEdit={handleEditClick} />) : (<p id="search-result-msg">No Result</p>)}
             <Outlet context={{ contacts, handleSave, handleClose }}/>
         </>
