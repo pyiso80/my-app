@@ -308,5 +308,25 @@ public class FunctionalTests {
         assertTrue(url.matches(".*/contacts/\\d+/edit"));
     }
 
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void edit_modal_via_search_bookmark() {
+        driver.get("http://localhost:" + port + "/contacts");
+        WebElement searchInput = driver.findElement(By.name("keyword"));
+        searchInput.sendKeys("Doe");
+        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        button.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        WebElement rowToUpdate = driver.findElement(
+                By.xpath("//table[@id='contact-table']//tbody/tr[2]")
+        );
+        var updateButton = rowToUpdate.findElement(By.cssSelector("[data-testid='update-contact']"));
+
+        updateButton.click();
+    }
+
 
 }
