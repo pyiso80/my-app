@@ -1,11 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ContactTable from './ContactTable';
 import ContactSearch from "./ContactSearch.jsx";
-import { Outlet, useNavigate } from 'react-router';
+import {Outlet, useNavigate, useSearchParams} from 'react-router';
 
 function ContactSearchMain() {
     const [contacts, setContacts] = useState(null);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const search = searchParams.get("keyword") || "";
+    console.log(search)
+
+    useEffect(() => {
+        fetch(`/api/contacts?keyword=${search}`)
+            .then(res => res.json())
+            .then(setContacts);
+    }, [search]);
 
     const handleEditClick = (contact) => {
         navigate(`/contacts/${contact.id}/edit`)

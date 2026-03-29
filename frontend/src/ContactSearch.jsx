@@ -1,13 +1,17 @@
 import React, {useRef} from 'react';
+import { useNavigate } from 'react-router';
 
 
 function ContactSearch({ setContacts }) {
     const searchInputRef = useRef(null)
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const keyword = searchInputRef.current.value;
 
         try {
+            navigate(`/contacts?keyword=${encodeURIComponent(keyword)}`)
             const response = await fetch(
                 `/api/contacts?keyword=${encodeURIComponent(keyword)}`,
             );

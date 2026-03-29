@@ -328,5 +328,21 @@ public class FunctionalTests {
         updateButton.click();
     }
 
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void search_bookmark_url() {
+        driver.get("http://localhost:" + port + "/contacts?keyword=Doe");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#contact-table tbody tr")
+        );
+
+        assertEquals(2, rows.size());
+        assertTrue(rows.getFirst().getText().contains("john.doe@example.com"));
+        assertTrue(rows.get(1).getText().contains("jane.doe@example.com"));
+    }
+
 
 }
