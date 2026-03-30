@@ -347,5 +347,19 @@ public class FunctionalTests {
         assertTrue(rows.get(1).getText().contains("jane.doe@example.com"));
     }
 
+    @Test
+    @Sql(scripts = "/contacts-data.sql")
+    void contacts_resource_root_url_should_display_all() {
+        driver.get("http://localhost:" + port + "/contacts");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#contact-table tbody tr")));
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#contact-table tbody tr")
+        );
+
+        assertEquals(6, rows.size());
+    }
+
 
 }
