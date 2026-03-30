@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ContactTable from './ContactTable';
 import ContactSearch from "./ContactSearch.jsx";
-import {Outlet, useNavigate, useSearchParams} from 'react-router';
+import {Outlet, useNavigate, useParams, useSearchParams} from 'react-router';
 
 function ContactSearchMain() {
     const [contacts, setContacts] = useState(null);
@@ -10,6 +10,7 @@ function ContactSearchMain() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const search = searchParams.get("keyword") || "";
+    const { id } = useParams();
     console.log(search)
 
     useEffect(() => {
@@ -69,7 +70,7 @@ function ContactSearchMain() {
         <>
             <ContactSearch setContacts={setContacts} searchInput={search} setSearchInput={setSearchInput}/>
             {contacts?.length > 0 ? (<ContactTable contacts={contacts} onDelete={handleDelete} onEdit={handleEditClick} />) : (<p id="search-result-msg">No Result</p>)}
-            <Outlet context={{ contacts, handleSave, handleClose }}/>
+            <Outlet context={{ contacts, handleSave, handleClose }} key={id}/>
         </>
     );
 }

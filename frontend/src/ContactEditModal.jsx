@@ -1,18 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import "./ContactEditModal.css";
 import { useParams, useOutletContext } from "react-router";
 
-function ContactEditModal() {
+function ContactEditModal( ) {
     const { id } = useParams();
     const { contacts, handleSave, handleClose } = useOutletContext();
 
     const contact = contacts.find(c => c.id === Number(id));
     const [form, setForm] = useState(contact);
-
-    // If contact changes, sync form
-    useEffect(() => {
-        setForm(contact);
-    }, [contact]);
 
     const handleChange = (e) => {
         setForm({
@@ -25,6 +20,7 @@ function ContactEditModal() {
         handleSave(form);
     };
 
+    // noinspection JSValidateTypes
     return (
         <>
             <div className="backdrop">
